@@ -1,3 +1,4 @@
+// @ts-ignore
 import { GetItemCommandOutput } from "@aws-sdk/client-dynamodb";
 
 export interface IDynamoStore {

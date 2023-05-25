@@ -5,7 +5,9 @@ import {
   GetItemCommandOutput,
   PutItemCommand,
   UpdateItemCommand,
+  //@ts-ignore
 } from "@aws-sdk/client-dynamodb";
+//@ts-ignore
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
 export class DynamoStore implements IDynamoStore {

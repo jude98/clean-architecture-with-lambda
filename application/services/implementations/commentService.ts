@@ -6,7 +6,7 @@ import ICommentModel from "../../../data/models/commentModels";
 @injectable()
 export class CommentService implements ICommentService {
   constructor(
-    @inject(ICommentRepository) private _commentRepository: ICommentRepository
+    @inject("ICommentRepository") private _commentRepository: ICommentRepository
   ) {}
 
   async getComment(commentId: string): Promise<any> {
