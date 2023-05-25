@@ -1,3 +1,3 @@
 export interface ICommentService {
-  getItem(commentId: string): Promise<any>; //add return type
+  getComment(commentId: string): Promise<any>; //add return type
 }

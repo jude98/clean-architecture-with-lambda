@@ -15,4 +15,14 @@ export class CommentRepository implements ICommentRepository {
       throw err;
     }
   }
+
+  async createComment(item: { [key: string]: any }): Promise<boolean> {
+    try {
+      await this._db.createItem("CommentsTable", item);
+      return true;
+    } catch (err) {
+      console.log(`[ERROR] ${err}`);
+      throw err;
+    }
+  }
 }

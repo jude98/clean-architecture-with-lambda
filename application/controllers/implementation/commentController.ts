@@ -1,10 +1,11 @@
 import { inject, injectable } from "tsyringe";
-import { CommentService } from "../../services/implementations/commentService";
+import { ICommentService } from "../../services/interfaces/ICommentService";
+import { ICommentController } from "../interfaces/ICommentController";
 
 @injectable()
-export class ICommentRepository {
+export class CommentController implements ICommentController {
   constructor(
-    @inject("CommentService") private _commentService: CommentService
+    @inject("ICommentService") private _commentService: ICommentService
   ) {}
 
   async getCommentById(commentId: string): Promise<any> {

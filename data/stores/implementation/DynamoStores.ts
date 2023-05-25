@@ -4,7 +4,9 @@ import {
   GetItemCommand,
   GetItemCommandOutput,
   PutItemCommand,
+  UpdateItemCommand,
 } from "@aws-sdk/client-dynamodb";
+import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
 export class DynamoStore implements IDynamoStore {
   private readonly _dynamoClient: DynamoDBClient;
@@ -26,6 +28,48 @@ export class DynamoStore implements IDynamoStore {
       const command = new GetItemCommand(inputQuery);
       const response = await this._dynamoClient.send(command);
       return response;
+    } catch (err) {
+      console.log(`[ERROR] ${err}`);
+      throw err;
+    }
+  }
+
+  async createItem(
+    tableName: string,
+    item: { [key: string]: any }
+  ): Promise<boolean> {
+    try {
+      const createQuery = {
+        TableName: tableName,
+        Item: marshall(item),
+      };
+      const command = new PutItemCommand(createQuery);
+      const response = await this._dynamoClient.send(command);
+      return true;
+    } catch (err) {
+      console.log(`[INFO] ${err}`);
+      throw err;
+    }
+  }
+
+  async updateItem(
+    tableName: string,
+    newComment: string,
+    PK: string
+  ): Promise<boolean> {
+    // considering the PK is already known
+    try {
+      const updateQuery = {
+        TableName: tableName,
+        Key: marshall({ commentId: PK }),
+        UpdateExpression: "SET comment = :newComment",
+        ExpressionAttributeValues: marshall({
+          ":newComment": newComment,
+        }),
+      };
+      const command = new UpdateItemCommand(updateQuery);
+      await this._dynamoClient.send(command);
+      return true;
     } catch (err) {
       console.log(`[ERROR] ${err}`);
       throw err;
