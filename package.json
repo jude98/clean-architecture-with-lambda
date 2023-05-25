@@ -5,7 +5,8 @@
     "@aws-sdk/util-dynamodb": "^3.338.0",
     "aws-sdk": "^2.1383.0",
     "reflect-metadata": "^0.1.13",
-    "tsyringe": "^4.7.0"
+    "tsyringe": "^4.7.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "typescript": "^5.0.4"

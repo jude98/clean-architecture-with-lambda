@@ -1,6 +1,7 @@
 import { ICommentRepository } from "../interfaces/ICommentRepository";
 import { inject, injectable } from "tsyringe";
-import { IDynamoStore } from "../../stores/implementation/interfaces/IDynamoStore";
+import { IDynamoStore } from "../../stores/interfaces/IDynamoStore";
+import ICommentModel, { DynamoCommentModel } from "../../models/commentModels";
 
 @injectable()
 export class CommentRepository implements ICommentRepository {
@@ -16,9 +17,16 @@ export class CommentRepository implements ICommentRepository {
     }
   }
 
-  async createComment(item: { [key: string]: any }): Promise<boolean> {
+  async createComment(newComment: ICommentModel): Promise<boolean> {
     try {
-      await this._db.createItem("CommentsTable", item);
+      // when creating an item, convert the item to the entity model (with id and other attributes)
+      const commentModel: DynamoCommentModel = {
+        commentId: "1",
+        createdAtTime: Date.now(),
+        isDeleted: false,
+        ...newComment,
+      };
+      await this._db.createItem("CommentsTable", commentModel);
       return true;
     } catch (err) {
       console.log(`[ERROR] ${err}`);

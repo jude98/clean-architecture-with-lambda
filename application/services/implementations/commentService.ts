@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { ICommentService } from "../interfaces/ICommentService";
 import { ICommentRepository } from "../../../data/repository/interfaces/ICommentRepository";
+import ICommentModel from "../../../data/models/commentModels";
 
 @injectable()
 export class CommentService implements ICommentService {
@@ -10,8 +11,17 @@ export class CommentService implements ICommentService {
 
   async getComment(commentId: string): Promise<any> {
     try {
-      const response = this._commentRepository.getComment(commentId);
+      const response = await this._commentRepository.getComment(commentId);
       return response;
+    } catch (err) {
+      console.log(`[ERROR] ${err}`);
+      throw err;
+    }
+  }
+
+  async createComment(item: ICommentModel): Promise<boolean> {
+    try {
+      return await this._commentRepository.createComment(item);
     } catch (err) {
       console.log(`[ERROR] ${err}`);
       throw err;
